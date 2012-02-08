@@ -38,6 +38,8 @@ public class JBehaveDeploymentAppender implements AuxiliaryArchiveAppender
    public Archive<?> createAuxiliaryArchive()
    {
       Collection<JavaArchive> archives = DependencyResolvers.use(MavenDependencyResolver.class)
+            .goOffline()
+            .loadMetadataFromPom("pom.xml")
             .artifact("org.jbehave:jbehave-core:jar:3.5.4")
             .resolveAs(JavaArchive.class);
       JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "arquillian-jbehave.jar");

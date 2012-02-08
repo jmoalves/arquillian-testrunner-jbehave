@@ -54,6 +54,7 @@
   <modules>
     <module>examples</module>
     <module>container</module>
+    <module>core</module>
   </modules>
 
   <build>

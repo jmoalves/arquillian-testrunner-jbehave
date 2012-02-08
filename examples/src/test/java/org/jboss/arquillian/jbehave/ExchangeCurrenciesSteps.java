@@ -27,7 +27,7 @@ import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
 /**
- * The annotated steps for the {@link ExchangeCurrenciesStory} story.
+ * The annotated steps for the {@link ExchangeCurrencies} story.
  * 
  * @author Vineet Reynolds
  *

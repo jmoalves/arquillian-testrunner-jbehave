@@ -16,8 +16,8 @@
  */
 package org.jboss.arquillian.jbehave.container;
 
+import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
-import org.jboss.arquillian.core.spi.LoadableExtension;
 
 /**
  * Arquillian extension for JBehave.
@@ -25,7 +25,7 @@ import org.jboss.arquillian.core.spi.LoadableExtension;
  * @author Vineet Reynolds
  *
  */
-public class JBehaveContainerExtension implements LoadableExtension
+public class JBehaveContainerExtension implements RemoteLoadableExtension
 {
 
    @Override

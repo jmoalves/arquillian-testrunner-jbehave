@@ -19,6 +19,7 @@ package org.jboss.arquillian.jbehave;
 import static org.jbehave.core.reporters.Format.CONSOLE;
 import static org.jbehave.core.reporters.Format.HTML;
 import static org.jbehave.core.reporters.Format.TXT;
+import static org.jbehave.core.reporters.Format.XML;
 
 import javax.inject.Inject;
 
@@ -31,6 +32,7 @@ import org.jbehave.core.junit.JUnitStory;
 import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.steps.InstanceStepsFactory;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -45,7 +47,8 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(Arquillian.class)
-public class ExchangeCurrenciesStory extends JUnitStory
+@RunAsClient
+public class ExchangeCurrencies extends JUnitStory
 {
    
    @Inject
@@ -56,7 +59,7 @@ public class ExchangeCurrenciesStory extends JUnitStory
    {
       JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
             .addPackage("org.jboss.arquillian.jbehave")
-            .addAsResource("org/jboss/arquillian/jbehave/exchange_currencies_story")
+            .addAsResource("org/jboss/arquillian/jbehave/exchange_currencies.story")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
       return archive;
    }
@@ -69,13 +72,14 @@ public class ExchangeCurrenciesStory extends JUnitStory
    public void setup()
    {
       Configuration configuration = new MostUsefulConfiguration()
-            .useStoryPathResolver(new UnderscoredCamelCaseResolver(""))
+            .useStoryPathResolver(new UnderscoredCamelCaseResolver())
             .useStoryReporterBuilder(new StoryReporterBuilder()
                   .withCodeLocation(CodeLocations.codeLocationFromClass(this.getClass()))
                   .withDefaultFormats()
-                  .withFormats(CONSOLE, TXT, HTML)
+                  .withFormats(CONSOLE, TXT, HTML, XML)
                   .withFailureTrace(true));
       useConfiguration(configuration);
+      exchangeService = new StaticCurrencyExchangeService();
       addSteps(new InstanceStepsFactory(configuration, new ExchangeCurrenciesSteps(exchangeService)).createCandidateSteps());
    }
 
