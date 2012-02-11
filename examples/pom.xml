@@ -24,7 +24,7 @@
     <dependencies>
         <dependency>
             <groupId>org.jboss.arquillian.jbehave</groupId>
-            <artifactId>arquillian-jbehave-container</artifactId>
+            <artifactId>arquillian-jbehave-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         

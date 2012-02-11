@@ -21,6 +21,9 @@ import java.util.Currency;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+
 /**
  * An implementation of the {@link CurrencyExchangeService}
  * that uses a static set of exchange rates.
@@ -28,6 +31,8 @@ import java.util.Map;
  * @author Vineet Reynolds
  *
  */
+@Stateless
+@Local(CurrencyExchangeService.class)
 public class StaticCurrencyExchangeService implements CurrencyExchangeService
 {
    

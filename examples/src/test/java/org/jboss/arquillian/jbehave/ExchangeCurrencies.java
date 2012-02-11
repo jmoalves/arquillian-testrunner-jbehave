@@ -21,8 +21,6 @@ import static org.jbehave.core.reporters.Format.HTML;
 import static org.jbehave.core.reporters.Format.TXT;
 import static org.jbehave.core.reporters.Format.XML;
 
-import javax.inject.Inject;
-
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.embedder.Embedder;
@@ -30,9 +28,9 @@ import org.jbehave.core.io.CodeLocations;
 import org.jbehave.core.io.UnderscoredCamelCaseResolver;
 import org.jbehave.core.junit.JUnitStory;
 import org.jbehave.core.reporters.StoryReporterBuilder;
-import org.jbehave.core.steps.InstanceStepsFactory;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
+import org.jboss.arquillian.jbehave.core.ArquillianInstanceStepsFactory;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -51,9 +49,6 @@ import org.junit.runner.RunWith;
 public class ExchangeCurrencies extends JUnitStory
 {
    
-   @Inject
-   private CurrencyExchangeService exchangeService;
-
    @Deployment
    public static JavaArchive createDeployment()
    {
@@ -79,8 +74,7 @@ public class ExchangeCurrencies extends JUnitStory
                   .withFormats(CONSOLE, TXT, HTML, XML)
                   .withFailureTrace(true));
       useConfiguration(configuration);
-      exchangeService = new StaticCurrencyExchangeService();
-      addSteps(new InstanceStepsFactory(configuration, new ExchangeCurrenciesSteps(exchangeService)).createCandidateSteps());
+      addSteps(new ArquillianInstanceStepsFactory(configuration, new ExchangeCurrenciesSteps()).createCandidateSteps());
    }
 
 }

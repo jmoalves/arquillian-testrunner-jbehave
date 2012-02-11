@@ -14,11 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.jbehave.container;
+package org.jboss.arquillian.jbehave.client;
 
 import java.util.Collection;
 
+import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
+import org.jboss.arquillian.jbehave.container.JBehaveContainerExtension;
+import org.jboss.arquillian.jbehave.core.ArquillianInstanceStepsFactory;
+import org.jboss.arquillian.jbehave.core.StepEnricherProvider;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -31,7 +35,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
  * @author Vineet Reynolds
  *
  */
-public class JBehaveDeploymentAppender implements AuxiliaryArchiveAppender
+public class JBehaveCoreDeploymentAppender implements AuxiliaryArchiveAppender
 {
 
    @Override
@@ -47,6 +51,9 @@ public class JBehaveDeploymentAppender implements AuxiliaryArchiveAppender
       {
          archive.merge(element);
       }
+      
+      archive.addClasses(JBehaveContainerExtension.class, ArquillianInstanceStepsFactory.class, StepEnricherProvider.class);
+      archive.addAsServiceProvider(RemoteLoadableExtension.class, JBehaveContainerExtension.class);
       return archive;
    }
 

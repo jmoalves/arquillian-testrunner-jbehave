@@ -17,7 +17,7 @@
 package org.jboss.arquillian.jbehave.container;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
-import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
+import org.jboss.arquillian.jbehave.core.StepEnricherProvider;
 
 /**
  * Arquillian extension for JBehave.
@@ -31,7 +31,7 @@ public class JBehaveContainerExtension implements RemoteLoadableExtension
    @Override
    public void register(ExtensionBuilder builder)
    {
-      builder.service(AuxiliaryArchiveAppender.class, JBehaveDeploymentAppender.class);
+      builder.observer(StepEnricherProvider.class);
    }
 
 }

@@ -21,6 +21,8 @@ import java.util.Currency;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.ejb.EJB;
+
 import junit.framework.Assert;
 
 import org.jbehave.core.annotations.Then;
@@ -35,13 +37,15 @@ import org.jbehave.core.annotations.When;
 public class ExchangeCurrenciesSteps
 {
    private static final Logger logger = Logger.getLogger(ExchangeCurrenciesSteps.class.getName());
-   
+
    private BigDecimal result;
+
+   @EJB
    private CurrencyExchangeService exchangeService;
-   
-   public ExchangeCurrenciesSteps(CurrencyExchangeService exchangeService)
+
+   public ExchangeCurrenciesSteps()
    {
-      this.exchangeService = exchangeService;
+      exchangeService = new StaticCurrencyExchangeService();
    }
 
    @When("converting $amount $fromCurrencyCode to $toCurrencyCode")
