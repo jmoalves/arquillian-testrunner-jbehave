@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.jbehave.container;
+package org.jboss.arquillian.jbehave.examples.container;
 
 import static org.jbehave.core.reporters.Format.CONSOLE;
 import static org.jbehave.core.reporters.Format.HTML;
@@ -52,8 +52,8 @@ public class ExchangeCurrencies extends JUnitStory
    {
       JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
             .addPackage("org.jboss.arquillian.jbehave.domain")
-            .addPackage("org.jboss.arquillian.jbehave.container")
-            .addAsResource("org/jboss/arquillian/jbehave/container/exchange_currencies.story")
+            .addPackage("org.jboss.arquillian.jbehave.examples.container")
+            .addAsResource("org/jboss/arquillian/jbehave/examples/container/exchange_currencies.story")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
       return archive;
    }
