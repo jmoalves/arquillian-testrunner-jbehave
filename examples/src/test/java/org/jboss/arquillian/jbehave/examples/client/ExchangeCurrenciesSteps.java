@@ -14,20 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.jbehave.examples.container;
+package org.jboss.arquillian.jbehave.examples.client;
 
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.Currency;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.ejb.EJB;
 
 import junit.framework.Assert;
 
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
-import org.jboss.arquillian.jbehave.domain.CurrencyExchangeService;
+import org.jboss.arquillian.drone.api.annotation.Drone;
+import org.jboss.arquillian.test.api.ArquillianResource;
+import org.openqa.selenium.WebDriver;
 
 /**
  * The annotated steps for the {@link ExchangeCurrencies} story.
@@ -41,8 +42,11 @@ public class ExchangeCurrenciesSteps
 
    private BigDecimal result;
 
-   @EJB
-   private CurrencyExchangeService exchangeService;
+   @Drone
+   private WebDriver driver;
+
+   @ArquillianResource
+   private URL contextRoot;
 
    public ExchangeCurrenciesSteps()
    {
@@ -54,7 +58,10 @@ public class ExchangeCurrenciesSteps
    {
       Currency fromCurrency = Currency.getInstance(fromCurrencyCode);
       Currency toCurrency = Currency.getInstance(toCurrencyCode);
-      result = exchangeService.getQuote(fromCurrency, amount, toCurrency);
+      driver.get(contextRoot.toString());
+      ExchangeCurrenciesPage exchangeCurrenciesPage = new ExchangeCurrenciesPage(driver, contextRoot);
+      exchangeCurrenciesPage.submitDetailsForQuote(fromCurrency, amount, toCurrency);
+      result = exchangeCurrenciesPage.getQuoteFromPage();
       logger.log(Level.INFO, result.toPlainString());
    }
 
@@ -63,4 +70,5 @@ public class ExchangeCurrenciesSteps
    {
       Assert.assertEquals(0, result.compareTo(new BigDecimal(quote)));
    }
+
 }

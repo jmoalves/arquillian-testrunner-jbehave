@@ -17,12 +17,14 @@
 package org.jboss.arquillian.jbehave.domain;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
+import javax.inject.Named;
 
 /**
  * An implementation of the {@link CurrencyExchangeService}
@@ -31,6 +33,7 @@ import javax.ejb.Stateless;
  * @author Vineet Reynolds
  *
  */
+@Named("exchangeService")
 @Stateless
 @Local(CurrencyExchangeService.class)
 public class StaticCurrencyExchangeService implements CurrencyExchangeService
@@ -55,7 +58,7 @@ public class StaticCurrencyExchangeService implements CurrencyExchangeService
       {
          String reverseExchangePair = toCurrency.getCurrencyCode() + fromCurrency.getCurrencyCode();
          exchangeRate = rates.get(reverseExchangePair);
-         return amount.divide(exchangeRate);
+         return amount.divide(exchangeRate, 5, RoundingMode.HALF_EVEN);
       }
       return exchangeRate.multiply(amount);
    }
