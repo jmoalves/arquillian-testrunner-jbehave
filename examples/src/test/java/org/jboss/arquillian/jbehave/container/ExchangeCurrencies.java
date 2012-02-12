@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.jbehave;
+package org.jboss.arquillian.jbehave.container;
 
 import static org.jbehave.core.reporters.Format.CONSOLE;
 import static org.jbehave.core.reporters.Format.HTML;
@@ -29,7 +29,6 @@ import org.jbehave.core.io.UnderscoredCamelCaseResolver;
 import org.jbehave.core.junit.JUnitStory;
 import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.jbehave.core.ArquillianInstanceStepsFactory;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -45,7 +44,6 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(Arquillian.class)
-@RunAsClient
 public class ExchangeCurrencies extends JUnitStory
 {
    
@@ -53,8 +51,9 @@ public class ExchangeCurrencies extends JUnitStory
    public static JavaArchive createDeployment()
    {
       JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
-            .addPackage("org.jboss.arquillian.jbehave")
-            .addAsResource("org/jboss/arquillian/jbehave/exchange_currencies.story")
+            .addPackage("org.jboss.arquillian.jbehave.domain")
+            .addPackage("org.jboss.arquillian.jbehave.container")
+            .addAsResource("org/jboss/arquillian/jbehave/container/exchange_currencies.story")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
       return archive;
    }

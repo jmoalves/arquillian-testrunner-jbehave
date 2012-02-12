@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.jbehave;
+package org.jboss.arquillian.jbehave.container;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -27,6 +27,7 @@ import junit.framework.Assert;
 
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
+import org.jboss.arquillian.jbehave.domain.CurrencyExchangeService;
 
 /**
  * The annotated steps for the {@link ExchangeCurrencies} story.
@@ -45,7 +46,7 @@ public class ExchangeCurrenciesSteps
 
    public ExchangeCurrenciesSteps()
    {
-      exchangeService = new StaticCurrencyExchangeService();
+
    }
 
    @When("converting $amount $fromCurrencyCode to $toCurrencyCode")
