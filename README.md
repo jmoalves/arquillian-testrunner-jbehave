@@ -38,7 +38,7 @@ allowing for the possibility of using real objects in the execution of stories.
        private BigDecimal result;
 
        @Inject
-       private CurrencyExchangeService exchangeService;
+       private CurrencyExchangeService exchangeService; // Injected, by Arquillian 
 
        @When("converting $amount $fromCurrencyCode to $toCurrencyCode")
        public void obtainQuote(BigDecimal amount, String fromCurrencyCode, String toCurrencyCode)
@@ -87,6 +87,10 @@ allowing for the possibility of using real objects in the execution of stories.
        }
     
     }
+
+### Run it
+
+Use Arquillian as usual. The story can be executed from your IDE or from a Maven build.
 
 ## More Info
 
