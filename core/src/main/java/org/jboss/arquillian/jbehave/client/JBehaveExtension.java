@@ -11,7 +11,6 @@ public class JBehaveExtension implements LoadableExtension
    public void register(ExtensionBuilder builder)
    {
       builder.service(AuxiliaryArchiveAppender.class, JBehaveCoreDeploymentAppender.class)
-             //.service(AuxiliaryArchiveAppender.class, JBehaveArquillianDeploymentAppender.class)
              .observer(ViewResourcesUnpacker.class)
              .observer(StepEnricherProvider.class);
    }
