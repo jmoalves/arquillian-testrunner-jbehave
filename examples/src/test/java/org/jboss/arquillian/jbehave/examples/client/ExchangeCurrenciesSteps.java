@@ -19,8 +19,6 @@ package org.jboss.arquillian.jbehave.examples.client;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import junit.framework.Assert;
 
@@ -38,8 +36,6 @@ import org.openqa.selenium.WebDriver;
  */
 public class ExchangeCurrenciesSteps
 {
-   private static final Logger logger = Logger.getLogger(ExchangeCurrenciesSteps.class.getName());
-
    private BigDecimal result;
 
    @Drone
@@ -47,11 +43,6 @@ public class ExchangeCurrenciesSteps
 
    @ArquillianResource
    private URL contextRoot;
-
-   public ExchangeCurrenciesSteps()
-   {
-
-   }
 
    @When("converting $amount $fromCurrencyCode to $toCurrencyCode")
    public void obtainQuote(BigDecimal amount, String fromCurrencyCode, String toCurrencyCode)
@@ -62,7 +53,6 @@ public class ExchangeCurrenciesSteps
       ExchangeCurrenciesPage exchangeCurrenciesPage = new ExchangeCurrenciesPage(driver, contextRoot);
       exchangeCurrenciesPage.submitDetailsForQuote(fromCurrency, amount, toCurrency);
       result = exchangeCurrenciesPage.getQuoteFromPage();
-      logger.log(Level.INFO, result.toPlainString());
    }
 
    @Then("return a quote of $quote")

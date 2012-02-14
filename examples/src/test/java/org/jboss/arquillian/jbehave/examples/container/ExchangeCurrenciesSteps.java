@@ -18,8 +18,6 @@ package org.jboss.arquillian.jbehave.examples.container;
 
 import java.math.BigDecimal;
 import java.util.Currency;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 
@@ -37,8 +35,6 @@ import org.jboss.arquillian.jbehave.domain.CurrencyExchangeService;
  */
 public class ExchangeCurrenciesSteps
 {
-   private static final Logger logger = Logger.getLogger(ExchangeCurrenciesSteps.class.getName());
-
    private BigDecimal result;
 
    @EJB
@@ -55,7 +51,6 @@ public class ExchangeCurrenciesSteps
       Currency fromCurrency = Currency.getInstance(fromCurrencyCode);
       Currency toCurrency = Currency.getInstance(toCurrencyCode);
       result = exchangeService.getQuote(fromCurrency, amount, toCurrency);
-      logger.log(Level.INFO, result.toPlainString());
    }
 
    @Then("return a quote of $quote")

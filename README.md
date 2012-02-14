@@ -37,7 +37,7 @@ allowing for the possibility of using real objects in the execution of stories.
 
        private BigDecimal result;
 
-       @Inject
+       @EJB
        private CurrencyExchangeService exchangeService; // Injected, by Arquillian 
 
        @When("converting $amount $fromCurrencyCode to $toCurrencyCode")
@@ -60,31 +60,48 @@ allowing for the possibility of using real objects in the execution of stories.
     @RunWith(Arquillian.class)
     public class ExchangeCurrencies extends JUnitStory
     {
-       
-       @Deployment
-       public static JavaArchive createDeployment()
-       {
-          JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
+    
+        @Deployment
+        public static WebArchive createDeployment()
+        {
+            WebArchive archive = ShrinkWrap.create(WebArchive.class)
                 .addPackage("org.jboss.arquillian.jbehave.domain")
                 .addPackage("org.jboss.arquillian.jbehave.examples.container")
                 .addAsResource("org/jboss/arquillian/jbehave/examples/container/exchange_currencies.story")
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-          return archive;
-       }
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+            archive.addAsLibraries(DependencyResolvers.use(MavenDependencyResolver.class)
+                .artifact("com.google.guava:guava:11.0.1")
+                .resolveAs(JavaArchive.class));
+            return archive;
+        }
     
-       @Before
-       public void setup()
-       {
-          Configuration configuration = new MostUsefulConfiguration()
+        public ExchangeCurrencies()
+        {
+             /* Configure JBehave to use the Guava SameThreadExecutorService.
+                This enables the ArquillianInstanceStepsFactory to access
+                the ThreadLocal contexts and datastores.
+              */
+            configuredEmbedder().useExecutorService(MoreExecutors.sameThreadExecutor());
+        }
+    
+        @Override
+        public Configuration configuration()
+        {
+            Configuration configuration = new MostUsefulConfiguration()
                 .useStoryPathResolver(new UnderscoredCamelCaseResolver())
                 .useStoryReporterBuilder(new StoryReporterBuilder()
-                      .withCodeLocation(CodeLocations.codeLocationFromClass(this.getClass()))
-                      .withDefaultFormats()
-                      .withFormats(CONSOLE, TXT, HTML, XML)
-                      .withFailureTrace(true));
-          useConfiguration(configuration);
-          addSteps(new ArquillianInstanceStepsFactory(configuration, new ExchangeCurrenciesSteps()).createCandidateSteps());
-       }
+                    .withCodeLocation(CodeLocations.codeLocationFromClass(this.getClass()))
+                    .withDefaultFormats()
+                    .withFormats(CONSOLE, TXT, HTML, XML)
+                    .withFailureTrace(true));
+            return configuration;
+        }
+    
+        @Override
+        public InjectableStepsFactory stepsFactory()
+        {
+            return new ArquillianInstanceStepsFactory(configuration(), new ExchangeCurrenciesSteps());
+        }
     
     }
 

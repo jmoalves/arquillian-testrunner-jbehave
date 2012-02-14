@@ -14,35 +14,24 @@ public class ArquillianInstanceStepsFactory extends InstanceStepsFactory
 
    public ArquillianInstanceStepsFactory(Configuration configuration, List<Object> stepsInstances)
    {
-      super(configuration, enrich(stepsInstances));
+      super(configuration, stepsInstances);
    }
 
    public ArquillianInstanceStepsFactory(Configuration configuration, Object... stepsInstances)
    {
-      super(configuration, enrich(asList(stepsInstances)));
+      super(configuration, asList(stepsInstances));
    }
-
-   /**
-    * We've got to enrich the instances when creating the {@link InstanceStepsFactory}
-    * and not when invoking the <code>org.jbehave.core.steps.InstanceStepsFactory.createInstanceOfType(Class<?>)</code>
-    * as a new thread is supposedly created to execute the stories.
-    * 
-    * Creating new threads eventually erases the contexts used by the Arquillian injectors, resuling in failed enrichment.  
-    * 
-    * @param stepsInstances The list of step instances to enrich
-    * @return The list of enrich instances
-    */
-   private static List<Object> enrich(List<Object> stepsInstances)
+   
+   @Override
+   public Object createInstanceOfType(Class<?> type)
    {
-      for (Object stepInstance : stepsInstances)
+      Object instance = super.createInstanceOfType(type);
+      Collection<TestEnricher> stepEnrichers = StepEnricherProvider.getEnrichers();
+      for (TestEnricher stepEnricher : stepEnrichers)
       {
-         Collection<TestEnricher> stepEnrichers = StepEnricherProvider.getEnrichers();
-         for (TestEnricher stepEnricher : stepEnrichers)
-         {
-            stepEnricher.enrich(stepInstance);
-         }
+         stepEnricher.enrich(instance);
       }
-      return stepsInstances;
+      return instance;
    }
 
 }

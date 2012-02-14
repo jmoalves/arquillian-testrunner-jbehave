@@ -23,19 +23,23 @@ import static org.jbehave.core.reporters.Format.XML;
 
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
-import org.jbehave.core.embedder.Embedder;
 import org.jbehave.core.io.CodeLocations;
 import org.jbehave.core.io.UnderscoredCamelCaseResolver;
 import org.jbehave.core.junit.JUnitStory;
 import org.jbehave.core.reporters.StoryReporterBuilder;
+import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.jbehave.core.ArquillianInstanceStepsFactory;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Before;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.junit.runner.RunWith;
+
+import com.google.common.util.concurrent.MoreExecutors;
 
 /**
  * A JBehave story, that uses the Arquillian JUnit test runner to execute the story.
@@ -48,22 +52,30 @@ public class ExchangeCurrencies extends JUnitStory
 {
    
    @Deployment
-   public static JavaArchive createDeployment()
+   public static WebArchive createDeployment()
    {
-      JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
+      WebArchive archive = ShrinkWrap.create(WebArchive.class)
             .addPackage("org.jboss.arquillian.jbehave.domain")
             .addPackage("org.jboss.arquillian.jbehave.examples.container")
             .addAsResource("org/jboss/arquillian/jbehave/examples/container/exchange_currencies.story")
-            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+      archive.addAsLibraries(DependencyResolvers.use(MavenDependencyResolver.class)
+            .artifact("com.google.guava:guava:11.0.1")
+            .resolveAs(JavaArchive.class));
       return archive;
    }
 
-   /**
-    * Setup the {@link Embedder}. This must execute before
-    * the @Test annotated <code>run()</code> method of {@link JUnitStory} is executed. 
-    */
-   @Before
-   public void setup()
+   public ExchangeCurrencies()
+   {
+      /* Configure JBehave to use the Guava SameThreadExecutorService.
+         This enables the ArquillianInstanceStepsFactory to access
+         the ThreadLocal contexts and datastores.
+       */
+      configuredEmbedder().useExecutorService(MoreExecutors.sameThreadExecutor());
+   }
+   
+   @Override
+   public Configuration configuration()
    {
       Configuration configuration = new MostUsefulConfiguration()
             .useStoryPathResolver(new UnderscoredCamelCaseResolver())
@@ -72,8 +84,13 @@ public class ExchangeCurrencies extends JUnitStory
                   .withDefaultFormats()
                   .withFormats(CONSOLE, TXT, HTML, XML)
                   .withFailureTrace(true));
-      useConfiguration(configuration);
-      addSteps(new ArquillianInstanceStepsFactory(configuration, new ExchangeCurrenciesSteps()).createCandidateSteps());
+      return configuration;
    }
-
+   
+   @Override
+   public InjectableStepsFactory stepsFactory()
+   {
+      return new ArquillianInstanceStepsFactory(configuration(), new ExchangeCurrenciesSteps());
+   }
+   
 }

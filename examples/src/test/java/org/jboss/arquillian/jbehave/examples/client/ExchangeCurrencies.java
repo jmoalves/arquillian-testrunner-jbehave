@@ -25,11 +25,11 @@ import java.io.File;
 
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
-import org.jbehave.core.embedder.Embedder;
 import org.jbehave.core.io.CodeLocations;
 import org.jbehave.core.io.UnderscoredCamelCaseResolver;
 import org.jbehave.core.junit.JUnitStory;
 import org.jbehave.core.reporters.StoryReporterBuilder;
+import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.drone.api.annotation.Drone;
@@ -38,7 +38,6 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 
@@ -71,13 +70,18 @@ public class ExchangeCurrencies extends JUnitStory
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
       return archive;
    }
-
-   /**
-    * Setup the {@link Embedder}. This must execute before
-    * the @Test annotated <code>run()</code> method of {@link JUnitStory} is executed. 
-    */
-   @Before
-   public void setup()
+   
+   public ExchangeCurrencies()
+   {
+      /* Configure JBehave to use the Guava SameThreadExecutorService.
+         This enables the ArquillianInstanceStepsFactory to access
+         the ThreadLocal contexts and datastores.
+      */
+      configuredEmbedder().useExecutorService(MoreExecutors.sameThreadExecutor());
+   }
+   
+   @Override
+   public Configuration configuration()
    {
       Configuration configuration = new MostUsefulConfiguration()
             .useStoryPathResolver(new UnderscoredCamelCaseResolver())
@@ -86,11 +90,13 @@ public class ExchangeCurrencies extends JUnitStory
                   .withDefaultFormats()
                   .withFormats(CONSOLE, TXT, HTML, XML)
                   .withFailureTrace(true));
-      useConfiguration(configuration);
-      addSteps(new ArquillianInstanceStepsFactory(configuration, new ExchangeCurrenciesSteps()).createCandidateSteps());
-      
-      //configure JBehave to use the Guava SameThreadExecutorService.
-      configuredEmbedder().useExecutorService(MoreExecutors.sameThreadExecutor());
+      return configuration;
+   }
+   
+   @Override
+   public InjectableStepsFactory stepsFactory()
+   {
+      return new ArquillianInstanceStepsFactory(configuration(), new ExchangeCurrenciesSteps());
    }
 
 }
