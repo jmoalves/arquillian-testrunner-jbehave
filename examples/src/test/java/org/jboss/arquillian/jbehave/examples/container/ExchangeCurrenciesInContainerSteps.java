@@ -33,14 +33,14 @@ import org.jboss.arquillian.jbehave.domain.CurrencyExchangeService;
  * @author Vineet Reynolds
  *
  */
-public class ExchangeInContainerCurrenciesSteps
+public class ExchangeCurrenciesInContainerSteps
 {
    private BigDecimal result;
 
    @EJB
    private CurrencyExchangeService exchangeService;
 
-   public ExchangeInContainerCurrenciesSteps()
+   public ExchangeCurrenciesInContainerSteps()
    {
 
    }

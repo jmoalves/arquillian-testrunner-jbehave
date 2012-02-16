@@ -18,7 +18,7 @@
         <version.arquillian_drone>1.0.0.CR3</version.arquillian_drone>
         <version.arq.container.glassfish>1.0.0.CR2</version.arq.container.glassfish>
         <version.glassfish>3.1.1</version.glassfish>
-        <version.jbossas_7>7.0.2.Final</version.jbossas_7>
+        <version.jbossas_7>7.1.0.Final</version.jbossas_7>
         <version.jbossas_spec>1.0.0.Final</version.jbossas_spec>
         <version.selenium>2.8.0</version.selenium>
     </properties>
@@ -187,7 +187,7 @@
                         <directory>src/test/resources</directory>
                     </testResource>
                     <testResource>
-                        <directory>src/test/resources-jboss-7.0.2</directory>
+                        <directory>src/test/resources-jboss-7.1.0</directory>
                     </testResource>
                 </testResources>
             </build>

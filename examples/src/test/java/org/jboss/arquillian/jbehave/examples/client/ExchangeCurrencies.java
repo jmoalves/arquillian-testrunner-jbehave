@@ -61,7 +61,7 @@ public class ExchangeCurrencies extends JUnitStory
    @Deployment
    public static WebArchive createDeployment()
    {
-      WebArchive archive = ShrinkWrap.create(WebArchive.class, "test.war")
+      WebArchive archive = ShrinkWrap.create(WebArchive.class, "test-client.war")
             .addPackage("org.jboss.arquillian.jbehave.domain")
             .addClass(ExchangeCurrenciesModel.class)
             .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
@@ -73,10 +73,11 @@ public class ExchangeCurrencies extends JUnitStory
    
    public ExchangeCurrencies()
    {
-      /* Configure JBehave to use the Guava SameThreadExecutorService.
-         This enables the ArquillianInstanceStepsFactory to access
-         the ThreadLocal contexts and datastores.
-      */
+      /*
+       * Configure JBehave to use the Guava SameThreadExecutorService.
+       * This enables the ArquillianInstanceStepsFactory to access
+       * the ThreadLocal contexts and datastores.
+       */
       configuredEmbedder().useExecutorService(MoreExecutors.sameThreadExecutor());
    }
    

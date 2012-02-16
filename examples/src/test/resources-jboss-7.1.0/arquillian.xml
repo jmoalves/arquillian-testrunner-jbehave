@@ -14,7 +14,7 @@ http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
     
     <container qualifier="jboss7" default="true">
         <configuration>
-            <property name="jbossHome">target/jboss-as-7.0.2.Final</property>
+            <property name="jbossHome">target/jboss-as-7.1.0.Final</property>
             <!-- <property name="javaVmArguments">-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y</property> -->
         </configuration>
     </container>

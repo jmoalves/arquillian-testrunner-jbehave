@@ -53,7 +53,7 @@ public class ExchangeCurrenciesInContainer extends JUnitStory
    @Deployment
    public static WebArchive createDeployment()
    {
-      WebArchive archive = ShrinkWrap.create(WebArchive.class)
+      WebArchive archive = ShrinkWrap.create(WebArchive.class, "test-incontainer.war")
             .addPackage("org.jboss.arquillian.jbehave.domain")
             .addPackage("org.jboss.arquillian.jbehave.examples.container")
             .addAsResource("org/jboss/arquillian/jbehave/examples/container/exchange_currencies_in_container.story")
@@ -66,9 +66,10 @@ public class ExchangeCurrenciesInContainer extends JUnitStory
 
    public ExchangeCurrenciesInContainer()
    {
-      /* Configure JBehave to use the Guava SameThreadExecutorService.
-         This enables the ArquillianInstanceStepsFactory to access
-         the ThreadLocal contexts and datastores.
+      /* 
+       * Configure JBehave to use the Guava SameThreadExecutorService.
+       * This enables the ArquillianInstanceStepsFactory to access
+       * the ThreadLocal contexts and datastores.
        */
       configuredEmbedder().useExecutorService(MoreExecutors.sameThreadExecutor());
    }
@@ -88,7 +89,7 @@ public class ExchangeCurrenciesInContainer extends JUnitStory
    @Override
    public InjectableStepsFactory stepsFactory()
    {
-      return new ArquillianInstanceStepsFactory(configuration(), new ExchangeInContainerCurrenciesSteps());
+      return new ArquillianInstanceStepsFactory(configuration(), new ExchangeCurrenciesInContainerSteps());
    }
    
 }
