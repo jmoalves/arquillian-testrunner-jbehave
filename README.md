@@ -77,9 +77,10 @@ allowing for the possibility of using real objects in the execution of stories.
     
         public ExchangeCurrencies()
         {
-             /* Configure JBehave to use the Guava SameThreadExecutorService.
-                This enables the ArquillianInstanceStepsFactory to access
-                the ThreadLocal contexts and datastores.
+             /* 
+              * Configure JBehave to use the Guava SameThreadExecutorService.
+              * This enables the ArquillianInstanceStepsFactory to access
+              * the ThreadLocal contexts and datastores.
               */
             configuredEmbedder().useExecutorService(MoreExecutors.sameThreadExecutor());
         }
@@ -90,7 +91,6 @@ allowing for the possibility of using real objects in the execution of stories.
             Configuration configuration = new MostUsefulConfiguration()
                 .useStoryPathResolver(new UnderscoredCamelCaseResolver())
                 .useStoryReporterBuilder(new StoryReporterBuilder()
-                    .withCodeLocation(CodeLocations.codeLocationFromClass(this.getClass()))
                     .withDefaultFormats()
                     .withFormats(CONSOLE, TXT, HTML, XML)
                     .withFailureTrace(true));

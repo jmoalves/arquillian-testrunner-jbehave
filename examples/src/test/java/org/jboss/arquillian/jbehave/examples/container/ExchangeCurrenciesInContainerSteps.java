@@ -40,11 +40,6 @@ public class ExchangeCurrenciesInContainerSteps
    @EJB
    private CurrencyExchangeService exchangeService;
 
-   public ExchangeCurrenciesInContainerSteps()
-   {
-
-   }
-
    @When("converting $amount $fromCurrencyCode to $toCurrencyCode")
    public void obtainQuote(BigDecimal amount, String fromCurrencyCode, String toCurrencyCode)
    {

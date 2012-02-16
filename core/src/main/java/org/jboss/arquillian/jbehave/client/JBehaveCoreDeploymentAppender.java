@@ -31,6 +31,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 
 /**
  * Deployment appender that adds the JBehave-Core distribution to a deployment.
+ * Also adds the classes and files necessary for the remote loadable extension.
  * 
  * @author Vineet Reynolds
  *
