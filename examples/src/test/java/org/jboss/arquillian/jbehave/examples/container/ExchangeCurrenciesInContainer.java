@@ -23,7 +23,6 @@ import static org.jbehave.core.reporters.Format.XML;
 
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
-import org.jbehave.core.io.CodeLocations;
 import org.jbehave.core.io.UnderscoredCamelCaseResolver;
 import org.jbehave.core.junit.JUnitStory;
 import org.jbehave.core.reporters.StoryReporterBuilder;
@@ -48,7 +47,7 @@ import com.google.common.util.concurrent.MoreExecutors;
  *
  */
 @RunWith(Arquillian.class)
-public class ExchangeCurrencies extends JUnitStory
+public class ExchangeCurrenciesInContainer extends JUnitStory
 {
    
    @Deployment
@@ -57,7 +56,7 @@ public class ExchangeCurrencies extends JUnitStory
       WebArchive archive = ShrinkWrap.create(WebArchive.class)
             .addPackage("org.jboss.arquillian.jbehave.domain")
             .addPackage("org.jboss.arquillian.jbehave.examples.container")
-            .addAsResource("org/jboss/arquillian/jbehave/examples/container/exchange_currencies.story")
+            .addAsResource("org/jboss/arquillian/jbehave/examples/container/exchange_currencies_in_container.story")
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
       archive.addAsLibraries(DependencyResolvers.use(MavenDependencyResolver.class)
             .artifact("com.google.guava:guava:11.0.1")
@@ -65,7 +64,7 @@ public class ExchangeCurrencies extends JUnitStory
       return archive;
    }
 
-   public ExchangeCurrencies()
+   public ExchangeCurrenciesInContainer()
    {
       /* Configure JBehave to use the Guava SameThreadExecutorService.
          This enables the ArquillianInstanceStepsFactory to access
@@ -80,7 +79,6 @@ public class ExchangeCurrencies extends JUnitStory
       Configuration configuration = new MostUsefulConfiguration()
             .useStoryPathResolver(new UnderscoredCamelCaseResolver())
             .useStoryReporterBuilder(new StoryReporterBuilder()
-                  .withCodeLocation(CodeLocations.codeLocationFromClass(this.getClass()))
                   .withDefaultFormats()
                   .withFormats(CONSOLE, TXT, HTML, XML)
                   .withFailureTrace(true));
@@ -90,7 +88,7 @@ public class ExchangeCurrencies extends JUnitStory
    @Override
    public InjectableStepsFactory stepsFactory()
    {
-      return new ArquillianInstanceStepsFactory(configuration(), new ExchangeCurrenciesSteps());
+      return new ArquillianInstanceStepsFactory(configuration(), new ExchangeInContainerCurrenciesSteps());
    }
    
 }

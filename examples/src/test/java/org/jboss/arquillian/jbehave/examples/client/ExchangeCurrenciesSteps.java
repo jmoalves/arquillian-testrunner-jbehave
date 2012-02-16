@@ -22,6 +22,7 @@ import java.util.Currency;
 
 import junit.framework.Assert;
 
+import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.jboss.arquillian.drone.api.annotation.Drone;
@@ -44,13 +45,20 @@ public class ExchangeCurrenciesSteps
    @ArquillianResource
    private URL contextRoot;
 
+   private ExchangeCurrenciesPage exchangeCurrenciesPage;
+
+   @Given("A user is at the Exchange Currencies Page")
+   public void visitPage()
+   {
+      driver.get(contextRoot.toString());
+      exchangeCurrenciesPage = new ExchangeCurrenciesPage(driver, contextRoot);
+   }
+   
    @When("converting $amount $fromCurrencyCode to $toCurrencyCode")
    public void obtainQuote(BigDecimal amount, String fromCurrencyCode, String toCurrencyCode)
    {
       Currency fromCurrency = Currency.getInstance(fromCurrencyCode);
       Currency toCurrency = Currency.getInstance(toCurrencyCode);
-      driver.get(contextRoot.toString());
-      ExchangeCurrenciesPage exchangeCurrenciesPage = new ExchangeCurrenciesPage(driver, contextRoot);
       exchangeCurrenciesPage.submitDetailsForQuote(fromCurrency, amount, toCurrency);
       result = exchangeCurrenciesPage.getQuoteFromPage();
    }

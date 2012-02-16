@@ -171,6 +171,7 @@
                         <configuration>
                             <includes>
                                 <include>**/ExchangeCurrencies.java</include>
+                                <include>**/ExchangeCurrenciesInContainer.java</include>
                             </includes>
                         </configuration>
                     </plugin>

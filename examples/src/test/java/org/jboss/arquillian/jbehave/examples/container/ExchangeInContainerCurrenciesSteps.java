@@ -28,19 +28,19 @@ import org.jbehave.core.annotations.When;
 import org.jboss.arquillian.jbehave.domain.CurrencyExchangeService;
 
 /**
- * The annotated steps for the {@link ExchangeCurrencies} story.
+ * The annotated steps for the {@link ExchangeCurrenciesInContainer} story.
  * 
  * @author Vineet Reynolds
  *
  */
-public class ExchangeCurrenciesSteps
+public class ExchangeInContainerCurrenciesSteps
 {
    private BigDecimal result;
 
    @EJB
    private CurrencyExchangeService exchangeService;
 
-   public ExchangeCurrenciesSteps()
+   public ExchangeInContainerCurrenciesSteps()
    {
 
    }
