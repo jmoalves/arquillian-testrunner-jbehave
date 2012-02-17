@@ -89,12 +89,11 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <!-- required - otherwise tests will fail -->
-                            <forkMode>always</forkMode>
+                        <configuration>                            
                            <includes>
-                                <include>**/*Story.java</include>
-                           </includes>
+                                <include>**/ExchangeCurrencies.java</include>
+                                <include>**/ExchangeCurrenciesInContainer.java</include>
+                            </includes>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -102,7 +101,7 @@
                     <testResource>
                         <directory>src/test/java/</directory>
                         <includes>
-                            <include>**/*_story</include>
+                            <include>**/*.story</include>
                         </includes>
                     </testResource>
                     <testResource>

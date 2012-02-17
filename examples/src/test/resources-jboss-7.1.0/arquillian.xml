@@ -19,9 +19,4 @@ http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
         </configuration>
     </container>
 
-    <!-- Firefox Driver configuration -->
-    <extension qualifier="webdriver">
-        <property name="implementationClass">org.openqa.selenium.firefox.FirefoxDriver</property>
-    </extension>
-
 </arquillian>
