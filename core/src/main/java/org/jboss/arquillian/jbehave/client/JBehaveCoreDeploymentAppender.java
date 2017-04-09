@@ -26,8 +26,8 @@ import org.jboss.arquillian.jbehave.core.StepEnricherProvider;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
+import org.jboss.shrinkwrap.resolver.api.Resolvers;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystem;
 
 /**
  * Deployment appender that adds the JBehave-Core distribution to a deployment.
@@ -42,11 +42,11 @@ public class JBehaveCoreDeploymentAppender implements AuxiliaryArchiveAppender
    @Override
    public Archive<?> createAuxiliaryArchive()
    {
-      Collection<JavaArchive> archives = DependencyResolvers.use(MavenDependencyResolver.class)
-            .goOffline()
-            .loadMetadataFromPom("pom.xml")
-            .artifact("org.jbehave:jbehave-core:jar:3.5.4")
-            .resolveAs(JavaArchive.class);
+      Collection<JavaArchive> archives = Resolvers.use(MavenResolverSystem.class)
+            .loadPomFromFile("pom.xml")
+            .resolve("org.jbehave:jbehave-core:jar:4.1")
+            .withTransitivity()
+            .asList(JavaArchive.class);
       JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "arquillian-jbehave.jar");
       for (Archive<JavaArchive> element : archives)
       {

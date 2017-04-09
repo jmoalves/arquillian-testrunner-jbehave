@@ -19,6 +19,7 @@ package org.jboss.arquillian.jbehave.examples.client;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Currency;
+import java.util.logging.Logger;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -36,6 +37,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class ExchangeCurrenciesPage
 {
+	
+   private static final Logger LOG = Logger.getLogger(ExchangeCurrenciesPage.class.getName());
+   
    public static class PageUtilities
    {
       public static ExpectedCondition<WebElement> visibilityOfElementLocated(final By locator)
@@ -67,9 +71,12 @@ public class ExchangeCurrenciesPage
       this.contextPath = contextRoot;
       Wait<WebDriver> wait = new WebDriverWait(driver, 15);
       wait.until(PageUtilities.visibilityOfElementLocated(By.id("inputForm")));
-      if (!driver.getCurrentUrl().equals(contextPath.toString())
-            && !driver.getCurrentUrl().equals(contextPath + PAGE_NAME))
+      String currentUrl = driver.getCurrentUrl();
+      currentUrl = currentUrl.replaceAll(";jsessionid=[-a-zA-Z._0-9]+", ""); // get rid of jsessionid, if present
+	if (!currentUrl.equals(contextPath.toString())
+            && !currentUrl.equals(contextPath + PAGE_NAME))
       {
+         LOG.severe("Expected: " + contextPath + " or " + contextPath + PAGE_NAME + " but we got " + currentUrl);
          throw new IllegalStateException("This is not the Index page.");
       }
    }

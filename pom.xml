@@ -5,7 +5,7 @@
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
     <relativePath />
-    <version>8</version>
+    <version>22</version>
   </parent>
 
   <!-- Model Information -->
@@ -14,7 +14,7 @@
   <!-- Artifact Information -->
   <groupId>org.jboss.arquillian.jbehave</groupId>
   <artifactId>arquillian-jbehave-parent</artifactId>
-  <version>1.0.0.Final-SNAPSHOT</version>
+  <version>1.0.1.Final-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Arquillian TestRunner Parent JBehave</name>
@@ -22,13 +22,13 @@
 
   <properties>
     <!-- Versioning -->
-    <version.arquillian_core>1.0.0.CR7</version.arquillian_core>
+    <version.arquillian_core>1.1.13.Final</version.arquillian_core>
 
     <!-- override from parent -->
-    <version.release.plugin>2.1</version.release.plugin>
-    <version.maven_surefire>2.9</version.maven_surefire>
-    <maven.compiler.argument.source>1.5</maven.compiler.argument.source>
-    <maven.compiler.argument.target>1.5</maven.compiler.argument.target>
+    <version.release.plugin>2.5.3</version.release.plugin>
+    <version.maven_surefire>2.19.1</version.maven_surefire>
+    <maven.compiler.argument.source>1.8</maven.compiler.argument.source>
+    <maven.compiler.argument.target>1.8</maven.compiler.argument.target>
   </properties>
 
     <!-- Dependency Management -->

@@ -34,8 +34,8 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
+import org.jboss.shrinkwrap.resolver.api.Resolvers;
+import org.jboss.shrinkwrap.resolver.api.maven.ConfigurableMavenResolverSystem;
 import org.junit.runner.RunWith;
 
 import com.google.common.util.concurrent.MoreExecutors;
@@ -58,9 +58,10 @@ public class ExchangeCurrenciesInContainer extends JUnitStory
             .addPackage("org.jboss.arquillian.jbehave.examples.container")
             .addAsResource("org/jboss/arquillian/jbehave/examples/container/exchange_currencies_in_container.story")
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
-      archive.addAsLibraries(DependencyResolvers.use(MavenDependencyResolver.class)
-            .artifact("com.google.guava:guava:11.0.1")
-            .resolveAs(JavaArchive.class));
+      archive.addAsLibraries(Resolvers.use(ConfigurableMavenResolverSystem.class)
+            .resolve("com.google.guava:guava:21.0")
+            .withTransitivity()
+            .as(JavaArchive.class));
       return archive;
    }
 
@@ -71,7 +72,7 @@ public class ExchangeCurrenciesInContainer extends JUnitStory
        * This enables the ArquillianInstanceStepsFactory to access
        * the ThreadLocal contexts and datastores.
        */
-      configuredEmbedder().useExecutorService(MoreExecutors.sameThreadExecutor());
+      configuredEmbedder().useExecutorService(MoreExecutors.newDirectExecutorService());
    }
    
    @Override
