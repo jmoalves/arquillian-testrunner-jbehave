@@ -12,9 +12,11 @@ http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
         <property name="deploymentExportPath">target/deployment</property>
     </engine>
     
-    <container qualifier="jboss7" default="true">
+    <container qualifier="wildfly-10" default="true">
         <configuration>
             <property name="jbossHome">target/wildfly-10.1.0.Final</property>
+            <property name="javaVmArguments">-Djboss.socket.binding.port-offset=10000</property>
+            <property name="managementPort">19990</property>
             <!-- <property name="javaVmArguments">-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y</property> -->
         </configuration>
     </container>
